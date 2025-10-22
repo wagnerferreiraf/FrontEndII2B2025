@@ -19,7 +19,7 @@ export default function Home() {
   return (
     <div>
       <main>
-        <h1 className={styles.titulo}>Hello World!</h1>
+        <h1 className={styles.titulo}>Hello Worlds!</h1>
         <button onClick={() => { somar() }} className={styles.btn}>+</button>
         <button onClick={() => { subtrair() }} className={styles.btn}>-</button>
         <p>Número: {nr}</p>
