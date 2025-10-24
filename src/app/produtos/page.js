@@ -1,11 +1,7 @@
+'use client';
+import { useState } from 'react';
 import styles from './page.module.css';
-
-// import { useState } from "react";
-// Crie um componente chamado Produtos que possua o seguinte array:
-// Os dados devem ser exibidos dentro de uma tabela.
-// A tabela deve conter um <thead> com os títulos das colunas:ID,  Produto e Preço.
-// Cada produto deve aparecer em uma linha (<tr>) dentro do <tbody>.
-// O id deve estar dentro de uma célula <td>, onome deve estar dentro de outra célula <td> e o preço em outra <td>, com o formato R$ valor (utilize o toLocaleString para formatar).
+import Card from '@/components/Card';
 
 export default function Produtos() {
     const produtos = [
@@ -20,10 +16,34 @@ export default function Produtos() {
         { id: 9, nome: "HD Externo", preco: 400 },
         { id: 10, nome: "Mesa Digitalizadora", preco: 750 }
     ];
+
+    const [busca, setBusca] = useState('');
+    const [show, setShow] = useState(false);
+
+    const produtosFiltro = produtos.filter(prod => prod.nome.toLowerCase().includes(busca.toLowerCase()));
+    console.log(produtosFiltro);
+
+    //  cria uma div modal (que ocupe toda a view port) que seja exibida ao clicar em uma linha da tabela produtos
     return (
         <div>
             <h1>Lista de Produtos</h1>
-            <table>
+
+            <input
+                type="text"
+                value={busca}
+                onChange={ev => setBusca(ev.target.value)} // atualizando a busca para o valor digitado no input
+                placeholder='Digite sua busca'
+            />
+
+            {show && <div className={styles.modal} onClick={()=>setShow(false)}>
+                <Card className={styles.cardProd}
+                nome = 'Nome do produto'
+                id = '20'
+                preco = 'R$200'
+                />
+
+                </div>}
+            <table className={styles.tbl}>
                 <thead>
                     <tr>
                         <th>Id</th>
@@ -31,11 +51,14 @@ export default function Produtos() {
                         <th>Preço</th>
                     </tr>
                 </thead>
-                {/* crie o cabeçalho da tabela */}
                 <tbody>
-                    {produtos.map(p => (
-                        <tr key=""></tr>
-                ))}
+                    {produtosFiltro.map(p => (
+                        <tr key={p.id} onClick={()=>setShow(true)}>
+                            <td>{p.id}</td>
+                            <td>{p.nome}</td>
+                            <td>{p.preco.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}</td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </div>
